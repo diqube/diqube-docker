@@ -1,0 +1,79 @@
+<!--
+
+    diqube: Distributed Query Base, Docker images
+
+    Copyright (C) 2015 Bastian Gloeckle
+
+    This file is part of diqube Docker images.
+
+    diqube Docker images is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                        http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.diqube.docker</groupId>
+  <artifactId>diqube-docker</artifactId>
+  <version>1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>diqube - Docker images</name>
+  <url>http://www.diqube.org</url>
+  <licenses>
+    <license>
+      <name>GNU Affero General Public License 3</name>
+      <url>http://www.gnu.org/licenses/agpl-3.0.html</url>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>bgloeckle</id>
+      <name>Bastian Gloeckle</name>
+      <email>bastian@diqube.org</email>
+    </developer>
+  </developers>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.mycila</groupId>
+        <artifactId>license-maven-plugin</artifactId>
+        <version>2.11</version>
+        <executions>
+          <execution>
+            <id>update-license-headers</id>
+            <goals>
+              <goal>format</goal>
+            </goals>
+            <phase>validate</phase>
+            <configuration>
+              <aggregate>true</aggregate>
+              <header>${project.basedir}/license/header.txt</header>
+              <excludes>
+                <exclude>LICENSE</exclude>
+              </excludes>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
