@@ -20,7 +20,9 @@ The UI will then be available under the URL `http://localhost:8080/diqube-ui`.
 
 ##Deploy some data##
 
-An empty diqube server is obviously not of any use. So you need to deploy some data. You might want to use the sample data provided in the [diqube-server/data](https://github.com/diqube/diqube/tree/master/diqube-server/data) directory, you might want to build bigger data sets by inspecting the [diqube-data-examples](https://github.com/diqube/diqube-data-examples) repository or you could prepare your custom data, too, of course.
+An empty diqube server is obviously not of any use. So you need to deploy some data. You might want to use the sample data provided in the [diqube-server/data](https://github.com/diqube/diqube/tree/master/diqube-server/data) directory, you might want to build bigger data sets by inspecting the [diqube-data-examples](https://github.com/diqube/diqube-data-examples) repository or you could prepare your custom data, too, of course. 
+
+For more information, you might want to look at the "Loading data" chapter in the [Operating a cluster guide](https://github.com/diqube/diqube/blob/master/docs/OperatingCluster.md) of diqube.
 
 ###Prepare a SSH container and bind volumes###
 
