@@ -19,11 +19,11 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-FROM ubuntu:vivid
+FROM ubuntu:wily
 MAINTAINER Bastian Gloeckle <bastian@diqube.org>
 
 USER root
-RUN apt-get update && apt-get -y install openjdk-8-jdk maven build-essential git gnupg wget
+RUN apt-get update && apt-get -y install openjdk-8-jdk maven build-essential git gnupg wget ca-certificates-java && update-ca-certificates -f
 
 RUN adduser diqube --disabled-password --disabled-login
 
@@ -38,6 +38,7 @@ RUN mkdir /home/diqube/.m2 && \
 
 COPY settings.xml /home/diqube/.m2/
 COPY server.properties /home/diqube/diqube-server-work/conf/
+COPY ticket.pem /home/diqube/diqube-server-work/conf/
 COPY start-ui-and-server.sh /home/diqube/diqube-server-exec/
 
 RUN chown -R diqube:diqube /home/diqube
@@ -69,8 +70,8 @@ RUN gpg --keyserver pool.sks-keyservers.net --recv-keys \
 # Download, verify and then build Apache Thrift.
 WORKDIR /home/diqube/thrift
 RUN set -x && \
-	wget http://www.us.apache.org/dist/thrift/0.9.2/thrift-0.9.2.tar.gz -O thrift.tar.gz && \
-	wget http://www.us.apache.org/dist/thrift/0.9.2/thrift-0.9.2.tar.gz.asc -O thrift.tar.gz.asc && \
+	wget http://archive.apache.org/dist/thrift/0.9.3/thrift-0.9.3.tar.gz -O thrift.tar.gz && \
+	wget http://archive.apache.org/dist/thrift/0.9.3/thrift-0.9.3.tar.gz.asc -O thrift.tar.gz.asc && \
 	gpg --verify thrift.tar.gz.asc thrift.tar.gz && \
 	tar -xf thrift.tar.gz --strip-components=1 && \
 	rm thrift.tar.gz*
@@ -81,8 +82,8 @@ RUN ./configure --without-d --without-go --without-haskell --without-ruby --with
 # Download & extract Apache Tomcat.
 WORKDIR /home/diqube/diqube-server-exec/tomcat
 RUN set -x \
-	&& wget https://www.apache.org/dist/tomcat/tomcat-8/v8.0.26/bin/apache-tomcat-8.0.26.tar.gz -O tomcat.tar.gz \
-	&& wget https://www.apache.org/dist/tomcat/tomcat-8/v8.0.26/bin/apache-tomcat-8.0.26.tar.gz.asc -O tomcat.tar.gz.asc \
+	&& wget https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.26/bin/apache-tomcat-8.0.26.tar.gz -O tomcat.tar.gz \
+	&& wget https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.26/bin/apache-tomcat-8.0.26.tar.gz.asc -O tomcat.tar.gz.asc \
 	&& gpg --verify tomcat.tar.gz.asc tomcat.tar.gz \
 	&& tar -xf tomcat.tar.gz --strip-components=1 \
 	&& rm bin/*.bat \

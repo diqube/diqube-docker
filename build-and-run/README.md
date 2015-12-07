@@ -2,6 +2,8 @@
 
 This directory provides the possibility to create a Dockerfile with its environment which will, when an image is created, build a specific version of diqube from source and then start it. This will then provide a single-node server setup with a running diqube UI.
 
+Note that the provided image should **not be used in production**, as it has secrets, passwords and a private/public key pair hardcoded. Change the corresponding settings in [server.properties](src/server.properties) and exchange the [ticket.pem](src/ticket.pem) for production use!
+
 ##How to get started##
 
 1. Call the [prepare.sh](prepare.sh) script with the commit ID in the diqube repository of which you would like to have a Docker image.
@@ -16,7 +18,7 @@ This directory provides the possibility to create a Dockerfile with its environm
   docker run -d -p 8080:8080 --name diqube diqube/diqube-server 
   ```
 
-The UI will then be available under the URL `http://localhost:8080/diqube-ui`.
+The UI will then be available under the URL `http://localhost:8080/diqube-ui` and the superuser is `root` with password `diqube`.
 
 ##Deploy some data##
 
