@@ -39,6 +39,7 @@ RUN mkdir /home/diqube/.m2 && \
 COPY settings.xml /home/diqube/.m2/
 COPY server.properties /home/diqube/diqube-server-work/conf/
 COPY ticket.pem /home/diqube/diqube-server-work/conf/
+COPY ticket.pub.pem /home/diqube/diqube-server-work/conf/
 COPY start-ui-and-server.sh /home/diqube/diqube-server-exec/
 
 RUN chown -R diqube:diqube /home/diqube
@@ -81,13 +82,14 @@ RUN ./configure --without-d --without-go --without-haskell --without-ruby --with
 
 # Download & extract Apache Tomcat.
 WORKDIR /home/diqube/diqube-server-exec/tomcat
-RUN set -x \
-	&& wget https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.26/bin/apache-tomcat-8.0.26.tar.gz -O tomcat.tar.gz \
-	&& wget https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.26/bin/apache-tomcat-8.0.26.tar.gz.asc -O tomcat.tar.gz.asc \
-	&& gpg --verify tomcat.tar.gz.asc tomcat.tar.gz \
-	&& tar -xf tomcat.tar.gz --strip-components=1 \
-	&& rm bin/*.bat \
-	&& rm tomcat.tar.gz*
+RUN set -x && \
+	wget https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.26/bin/apache-tomcat-8.0.26.tar.gz -O tomcat.tar.gz && \
+	wget https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.26/bin/apache-tomcat-8.0.26.tar.gz.asc -O tomcat.tar.gz.asc && \
+	gpg --verify tomcat.tar.gz.asc tomcat.tar.gz && \
+	tar -xf tomcat.tar.gz --strip-components=1 && \
+	rm bin/*.bat && \
+	rm tomcat.tar.gz* && \
+  mkdir -p /home/diqube/diqube-server-exec/tomcat/conf/Catalina/localhost
 
 # Get "master" of diqube and build it.
 WORKDIR /home/diqube
@@ -102,9 +104,10 @@ RUN set -x && \
 	mvn clean install -DskipTests && \
 	cp /home/diqube/diqube/diqube-server/target/diqube-server-*.jar /home/diqube/diqube-server-exec/diqube-server.jar && \
 	cp /home/diqube/diqube/diqube-ui/target/diqube-ui-*.war /home/diqube/diqube-server-exec/diqube-ui.war && \
-	cp /home/diqube/diqube/diqube-ui/target/diqube-ui-*.war /home/diqube/diqube-server-exec/tomcat/webapps/diqube-ui.war && \
 	cp /home/diqube/diqube/diqube-tool/target/diqube-tool-*.jar /home/diqube/diqube-server-exec/diqube-tool.jar && \
 	rm -rf /home/diqube/diqube/*
+
+COPY diqube-ui.xml /home/diqube/diqube-server-exec/tomcat/conf/Catalina/localhost/
 
 VOLUME /home/diqube/diqube-server-work
 VOLUME /home/diqube/diqube-server-exec
